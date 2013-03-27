@@ -1,8 +1,32 @@
-A simpe Python3.3 client for http://pushover.net/ API based off of https://github.com/pix0r/pushover by pix0r.
+A simple Python3.3 client for http://pushover.net/ API based off of https://github.com/pix0r/pushover by pix0r.
 
 Install:
 
     pip install https://github.com/Wyattjoh/pushover
+
+Sample Python3 Usage:
+
+```python
+from pushover import Pushover
+
+po = Pushover("My App Token")
+po.user("My User Token")
+
+msg = po.msg("Hello, World!")
+
+msg.set("title", "Best title ever!!!")
+
+po.send(msg)
+```
+
+Sample Shell Usage:
+
+```bash
+./pushover "Hello, World!" --token="My App Token" --user="My User Token"
+```
+
+Python <small>v3</small>
+--------
 
 Pushover Class:
 
@@ -57,22 +81,8 @@ PushoverMessage Class:
      |  user(self, user_token, user_device=None)
      |      Sets a single user to be the recipient of this message with token "user_token" and device "user_device".
 
-Sample Usage:
-
-```python
-from pushover import Pushover
-
-po = Pushover("My App Token")
-po.user("My User Token")
-
-msg = po.msg("Hello, World!")
-
-msg.set("title", "Best title ever!!!")
-
-po.send(msg)
-```
-
-Or using command line utility:
+Shell
+--------
 
     Usage:    pushover <message> --token=<TOKEN> --user=<USER> [options]
 
@@ -87,10 +97,3 @@ Or using command line utility:
 	--title TITLE         Message title
 	--timestamp TIMESTAMP Optional UNIX timestamp
 	--priority PRIORITY   Optional priority setting (0=normal, 1=high)
-
-
-Sample Usage:
-
-```bash
-./pushover "Hello, World!" --token="My App Token" --user="My User Token"
-```
