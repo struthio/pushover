@@ -1,19 +1,90 @@
-A simpe Python client for http://pushover.net/ API
+A simpe Python3.3 client for http://pushover.net/ API based off of https://github.com/pix0r/pushover by pix0r.
 
 Install:
 
-    pip install https://github.com/pix0r/pushover.git
+    pip install https://github.com/Wyattjoh/pushover
 
-Usage:
+Pushover Class:
 
-	from pushover import pushover
+	class Pushover(builtins.object)
+     |  Creates a Pushover handler.
+     |  
+     |  Usage:
+     |  
+     |      po = Pushover("My App Token")
+     |      po.user("My User Token", "My User Device Name")
+     |  
+     |      msgid, msg = po.msg("Hello, World!")
+     |  
+     |      po.send(msgid)
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, token=None)
+     |      Creates a Pushover object.
+     |  
+     |  msg(self, message)
+     |      Creates a PushoverMessage object. Takes one "message" parameter (the message to be sent).
+     |      Returns with message id (mid) and PushoverMessage object (msg).
+     |  
+     |  send(self, mid)
+     |      Sends a specified message with id "mid".
+     |  
+     |  sendall(self)
+     |      Sends all PushoverMessage's owned by the Pushover object.
+     |  
+     |  user(self, user_token, user_device=None)
+     |      Sets a single user to be the recipient of all messages created with this Pushover object.
 
-	pushover(message="Hello, world",
-	    token="My App Token",
-		user="My User Key",
-		)
-	
+PushoverMessage Class:
+
+     class PushoverMessage(builtins.object)
+     |  Used for storing message specific data.
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, message)
+     |      Creates a PushoverMessage object.
+     |  
+     |  __str__(self)
+     |  
+     |  get(self)
+     |      Returns a dictionary with the values for the specified message.
+     |  
+     |  set(self, key, value)
+     |      Sets the value of a field "key" to the value of "value".
+     |  
+     |  user(self, user_token, user_device=None)
+     |      Sets a single user to be the recipient of this message with token "user_token" and device "user_device".
+
+Sample Usage:
+
+```python
+from pushover import Pushover
+
+po = Pushover("My App Token")
+po.user("My User Token")
+
+msg = po.msg("Hello, World!")
+
+msg.set("title", "Best title ever!!!")
+
+po.send(msg)
+```
+
 Or using command line utility:
 
-    pushover "Hello, world" --token="My App Token" --user="My User Key"
+    Usage:    pushover <message> --token=<TOKEN> --user=<USER> [options]
+
+	Options:
+	-h, --help            show this help message and exit
+	--token=<TOKEN>         Pushover app token (overrides environment
+	                      PUSHOVER_TOKEN)
+	--user=<USER>           Pushover user key
+
+	Optional:
+	--device DEVICE       Pushover device name
+	--title TITLE         Message title
+	--timestamp TIMESTAMP Optional UNIX timestamp
+	--priority PRIORITY   Optional priority setting (0=normal, 1=high)
 

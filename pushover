@@ -1,40 +1,35 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-import argparse
+"""
+Usage:    pushover <message> --token=<TOKEN> --user=<USER> [options]
 
-from pushover import pushover
+Options:
+-h, --help            show this help message and exit
+--token=<TOKEN>         Pushover app token (overrides environment
+                      PUSHOVER_TOKEN)
+--user=<USER>           Pushover user key
+
+Optional:
+--device DEVICE       Pushover device name
+--title TITLE         Message title
+--timestamp TIMESTAMP Optional UNIX timestamp
+--priority PRIORITY   Optional priority setting (0=normal, 1=high)
+"""
+
+import docopt
+import pushover
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Send Pushover.net message")
-    parser.add_argument('message', 
-            type=str,
-            help="Message to send",
-            )
-    parser.add_argument('--token',
-            type=str,
-            help="Pushover app token (overrides environment PUSHOVER_TOKEN)",
-            )
-    parser.add_argument('--user',
-            type=str,
-            help="Pushover user key (overrides ",
-            )
-    parser.add_argument('--title',
-            type=str,
-            help="Message title",
-            )
-    parser.add_argument('--timestamp',
-            type=int,
-            help="Optional UNIX timestamp",
-            )
-    parser.add_argument('--priority',
-            type=int,
-            help="Optional priority setting (0=normal, 1=high)",
-            default=0,
-            )
-    args = parser.parse_args()
+    arguments = docopt.docopt(__doc__)
 
-    d = {}
-    for k, v in vars(args).iteritems():
-        if v: d[k] = v
+    print(arguments)
 
-    pushover(**d)
+    po = pushover.Pushover(arguments['--token'])
+    po.user(arguments['--user'], arguments['--device'])
+    msgid, msg = po.msg(arguments['<message>'])
+
+    msg.set('title', arguments['--title'])
+    msg.set('timestamp', arguments['--timestamp'])
+    msg.set('priority', arguments['--priority'])
+
+    po.send(msgid)
