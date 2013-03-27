@@ -88,3 +88,9 @@ Or using command line utility:
 	--timestamp TIMESTAMP Optional UNIX timestamp
 	--priority PRIORITY   Optional priority setting (0=normal, 1=high)
 
+
+Sample Usage:
+
+```bash
+./pushover "Hello, World!" --token="My App Token" --user="My User Token"
+```
